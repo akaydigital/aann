@@ -1,0 +1,4 @@
+'use client';
+import {useSearchParams} from 'next/navigation';
+import {useState} from 'react';
+export default function Checkout(){const sp=useSearchParams();const [loading,setLoading]=useState(false);const [msg,setMsg]=useState('');async function pay(){setLoading(true);setMsg('');const r=await fetch('/api/checkout',{method:'POST',body:JSON.stringify({productId:sp.get('productId')})});const d=await r.json();setLoading(false);if(!r.ok){setMsg(d.error);return} location.href=d.redirect_url;}return <main className="container"><div className="form"><h2>Checkout</h2><p className="muted">Klik tombol bayar untuk masuk ke halaman pembayaran Midtrans.</p>{msg&&<p style={{color:'red'}}>{msg}</p>}<button onClick={pay} className="btn" disabled={loading}>{loading?'Memproses...':'Bayar dengan Midtrans'}</button></div></main>}

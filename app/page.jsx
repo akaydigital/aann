@@ -1,0 +1,8 @@
+import Link from 'next/link';
+import { prisma } from '@/lib/prisma';
+function rupiah(n){return new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(n)}
+export default async function Home(){
+ const products = await prisma.product.findMany({where:{active:true}, orderBy:{createdAt:'desc'}});
+ return <><Nav/><main className="container"><section className="hero"><div><h1>Marketplace Produk Digital seperti Shopee, khusus produk digital.</h1><p className="muted">Jual template website, desain Canva, file digital, e-book, script, voucher, dan layanan digital dengan checkout Midtrans.</p><Link className="btn" href="#produk">Lihat Produk</Link></div><div className="card"><img className="img" style={{height:320}} src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d"/><div className="card-body"><b>Checkout Otomatis</b><p className="muted">Login, pilih produk, bayar, lalu akses file setelah pembayaran sukses.</p></div></div></section><h2 id="produk">Produk Digital</h2><div className="grid">{products.map(p=><Link href={`/product/${p.id}`} className="card" key={p.id}><img className="img" src={p.imageUrl}/><div className="card-body"><h3>{p.name}</h3><p className="muted">{p.description.slice(0,80)}...</p><div className="price">{rupiah(p.price)}</div></div></Link>)}</div></main></>
+}
+function Nav(){return <div className="nav"><div className="container nav-inner"><Link href="/" className="brand">AKAY<span>Store</span></Link><div><Link className="btn gray" href="/login">Login</Link> <Link className="btn red" href="/register">Daftar</Link></div></div></div>}

@@ -1,0 +1,4 @@
+'use client';
+import {useState} from 'react';
+import Link from 'next/link';
+export default function Register(){const [err,setErr]=useState('');async function submit(e){e.preventDefault();const data=Object.fromEntries(new FormData(e.currentTarget));const r=await fetch('/api/auth/register',{method:'POST',body:JSON.stringify(data)});if(r.ok) location.href='/'; else setErr((await r.json()).error)}return <form className="form" onSubmit={submit}><h2>Daftar Akun</h2><input className="input" name="name" placeholder="Nama" required/><input className="input" name="email" type="email" placeholder="Email" required/><input className="input" name="password" type="password" placeholder="Password" required/>{err&&<p style={{color:'red'}}>{err}</p>}<button className="btn red">Daftar</button><p>Sudah punya akun? <Link href="/login">Login</Link></p></form>}

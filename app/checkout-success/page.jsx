@@ -1,0 +1,3 @@
+import Link from 'next/link';
+import { prisma } from '@/lib/prisma';
+export default async function Success({searchParams}){const order=await prisma.order.findUnique({where:{orderId:searchParams.order_id||''},include:{product:true}});return <main className="container"><div className="card"><div className="card-body"><h1>Pembayaran Berhasil / Diproses</h1><p className="muted">Jika status sudah paid, link download akan tampil.</p>{order?.status==='paid'?<a className="btn" href={order.product.fileUrl}>Download Produk</a>:<p>Status saat ini: {order?.status||'belum ditemukan'}. Refresh halaman setelah notifikasi Midtrans masuk.</p>}<br/><br/><Link href="/">Kembali ke toko</Link></div></div></main>}
